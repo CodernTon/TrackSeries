@@ -4,14 +4,12 @@ public class Movie {
 
     private int ID;
     private String title;
-    private boolean seen;
 
     public Movie(){}
 
-    public Movie(int ID, String title, boolean seen) {
+    public Movie(int ID, String title) {
         this.ID = ID;
         this.title = title;
-        this.seen = seen;
     }
     public int getID() {
         return ID;
@@ -29,22 +27,9 @@ public class Movie {
         this.title = title;
     }
 
-    public boolean isSeen() {
-        return seen;
-    }
-
-    public void setSeen(boolean seen) {
-        this.seen = seen;
-    }
-
     @Override
     public String toString(){
-        if(seen){
-            return title+" Watched";
-        }
-        else{
-            return  title+" Not watched";
-        }
+        return title;
     }
 }
 

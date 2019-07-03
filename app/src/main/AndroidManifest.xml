@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.antonlyngfelt.trackyourseries">
 
+    <supports-screens
+        android:largeScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true"
+        android:normalScreens="true"
+        />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,11 +25,11 @@
         </activity>
         <activity
             android:name=".AddSeries"
-            android:label="Add a Serie">
+            android:label="Add or Edit a Serie">
         </activity>
         <activity
             android:name=".AddMovie"
-            android:label="Add a Movie">
+            android:label="Add or Remove a Movie">
         </activity>
     </application>
 

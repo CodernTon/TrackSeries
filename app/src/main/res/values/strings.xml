@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TrackYourWatchings</string>
+    <string name="app_name">KeepTrack</string>
     <string name="Load">Load</string>
     <string name="load">Load</string>
     <string name="name">Name</string>
@@ -9,11 +9,13 @@
     <string name="find">Find</string>
     <string name="delete">Delete</string>
     <string name="load_series">Load Series</string>
-    <string name="add_serie">Add serie</string>
+    <string name="add_serie">  Edit series   </string>
     <string name="go_back">Go Back</string>
-    <string name="add_series">  Add Serie  </string>
+    <string name="add_series">  Add Series  </string>
     <string name="examplename">ExampleName</string>
     <string name="load_data">Load data</string>
     <string name="remove_serie">Remove Serie</string>
     <string name="movie">Add Movie</string>
+    <string name="series">Series</string>
+    <string name="movies">Movies</string>
 </resources>
