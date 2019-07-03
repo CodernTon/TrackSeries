@@ -13,13 +13,11 @@ public class AddMovie extends AppCompatActivity {
     AutoCompleteTextView movieName;
     DataBaseHelper dbHandler;
     ArrayAdapter<String> adapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addmovies);
     }
-
     @Override
     public void onStart(){
         super.onStart();
@@ -32,57 +30,61 @@ public class AddMovie extends AppCompatActivity {
     }
     public void setUpAutofillMovies(){
         movieName = findViewById(R.id.movieName);
-        dbHandler = new DataBaseHelper(this,null,null,1);
+        dbHandler = createDbhandler();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dbHandler.loadMovieName());
         movieName.setAdapter(adapter);
+    }
+    public void toastMessage(String toastMessage){
+        Context context = getApplicationContext();
+        Toast toast = Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT);
+        toast.show();
     }
     public void goToPresentResult(View view) {
         Intent showResult = new Intent(AddMovie.this, PresentResults.class);
         startActivity(showResult);
     }
-
+    public void removeText(){
+        movieName.setText("");
+    }
+    public String getMovieName(){
+        return movieName.getText().toString();
+    }
+    public DataBaseHelper createDbhandler(){
+        dbHandler=new DataBaseHelper(this, null, null, 1);
+        return dbHandler;
+    }
     public void addMovie(View view) {
-        Context context = getApplicationContext();
-        Toast toast1 = Toast.makeText(context, "Movie added", Toast.LENGTH_LONG);
-        Toast toast2 = Toast.makeText(context, "Movie already exist", Toast.LENGTH_LONG);
-        Toast toast3 = Toast.makeText(context, "Something wrong when adding the movie", Toast.LENGTH_LONG);
-        Toast toast4 = Toast.makeText(context, "Must name a movie",Toast.LENGTH_LONG);
         if(movieName.getText().toString().equals("")|| movieName.getText().equals(null)) {
-            toast4.show();
+            toastMessage("Must name a movie");
         }
         else {
             try {
-                DataBaseHelper dbHandler = new DataBaseHelper(this, null, null, 1);
-                String name = movieName.getText().toString();
-                Movie movie = new Movie(0, name);
+                dbHandler = createDbhandler();
+                Movie movie = new Movie(0, getMovieName());
                 if (dbHandler.addHandlerMovie(movie)) {
-                    toast1.show();
-                    movieName.setText("");
+                    toastMessage("Movie added");
+                    removeText();
                 } else {
-                    toast2.show();
+                    toastMessage("Movie already exist");
                 }
             } catch (Exception e) {
-                toast3.show();
+                toastMessage("Something wrong when adding the movie");
             }
         }
         setUpAutofillMovies();
     }
     public void removeMovie(View view) {
-        Context context = getApplicationContext();
-        Toast toast1 = Toast.makeText(context, "Movie removed", Toast.LENGTH_SHORT);
-        Toast toast2 = Toast.makeText(context, "No movie with that name", Toast.LENGTH_SHORT);
-        Toast toast3 = Toast.makeText(context, "You did not remove the movie correct", Toast.LENGTH_SHORT);
         try {
-            DataBaseHelper dataBaseHelper = new DataBaseHelper(this, null, null, 1);
-            boolean result = dataBaseHelper.deleteHandlerMovie(movieName.getText().toString());
+            dbHandler = createDbhandler();
+            boolean result = dbHandler.deleteHandlerMovie(getMovieName());
             if (result) {
-                movieName.setText("");
-                toast1.show();
+                removeText();
+                toastMessage("Movie removed");
             } else {
-                toast2.show();
+                toastMessage("No movie with that name");
             }
         }catch(Exception e){
-            toast3.show();
+            toastMessage("You did not remove the movie correct");
         }
         setUpAutofillMovies();
     }

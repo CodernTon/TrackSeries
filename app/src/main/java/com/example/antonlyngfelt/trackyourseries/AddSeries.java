@@ -41,7 +41,6 @@ public class AddSeries extends AppCompatActivity {
         serieSeason.setText("");
         serieEpisode.setText("");
     }
-
     public void setUpAutofillSeries(){
         serieName = findViewById(R.id.serieName);
         dbHandler = new DataBaseHelper(this,null,null,1);
@@ -50,16 +49,17 @@ public class AddSeries extends AppCompatActivity {
         serieSeason = (EditText) findViewById(R.id.serieSeason);
         serieEpisode = (EditText) findViewById(R.id.serieEpisode);
     }
+    public void toastMessage(String toastMessage){
+        Context context = getApplicationContext();
+        Toast toast = Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT);
+        toast.show();
+    }
     public void goToShowSerie(View view) {
         Intent showSerie = new Intent(AddSeries.this, PresentResults.class);
         startActivity(showSerie);
     }
 
     public void addSerie(View view) {
-        Context context = getApplicationContext();
-        Toast toast1 = Toast.makeText(context, "Serie added", Toast.LENGTH_SHORT);
-        Toast toast2 = Toast.makeText(context, "Serie already exist", Toast.LENGTH_SHORT);
-        Toast toast3 = Toast.makeText(context, "You did not add the series correct", Toast.LENGTH_SHORT);
         try {
             DataBaseHelper dbHandler = new DataBaseHelper(this, null, null, 1);
             String name = serieName.getText().toString();
@@ -67,43 +67,37 @@ public class AddSeries extends AppCompatActivity {
             int episode = Integer.parseInt(serieEpisode.getText().toString());
             Serie serie = new Serie(0, name, season, episode);
             if (dbHandler.addHandlerSerie(serie)){
-                toast1.show();
+                toastMessage("Added");
                 resetText();
             }
             else{
-                toast2.show();
+                toastMessage("Serie already exist");
             }
         }catch (Exception e){
-            toast3.show();
+            toastMessage("You did not add the series correct");
+
         }
         setUpAutofillSeries();
     }
 
     public void removeSerie(View view) {
-        Context context = getApplicationContext();
-        Toast toast1 = Toast.makeText(context, "Serie removed", Toast.LENGTH_SHORT);
-        Toast toast2 = Toast.makeText(context, "No serie with that name", Toast.LENGTH_SHORT);
-        Toast toast3 = Toast.makeText(context, "You did not remove the series correct", Toast.LENGTH_SHORT);
         try {
             DataBaseHelper dataBaseHelper = new DataBaseHelper(this, null, null, 1);
             boolean result = dataBaseHelper.deleteHandlerSerie(serieName.getText().toString());
             if (result) {
                 resetText();
-                toast1.show();
+                toastMessage("Serie removed");
+
             } else {
-                toast2.show();
+                toastMessage("No serie with that name");
             }
         }catch(Exception e){
-            toast3.show();
+            toastMessage("You did not remove the series correct");
         }
         setUpAutofillSeries();
     }
 
     public void updateSerie(View view) {
-        Context context = getApplicationContext();
-        Toast toast1 = Toast.makeText(context, "Uppdated Serie", Toast.LENGTH_SHORT);
-        Toast toast2 = Toast.makeText(context, "No serie with that name", Toast.LENGTH_SHORT);
-        Toast toast3=Toast.makeText(context,"Check your input",Toast.LENGTH_SHORT);
         try {
             DataBaseHelper dataBaseHelper = new DataBaseHelper(this, null, null, 1);
             boolean result = dataBaseHelper.updateHandlerSerie(
@@ -112,12 +106,12 @@ public class AddSeries extends AppCompatActivity {
                     Integer.parseInt(serieEpisode.getText().toString()));
             if (result) {
                 resetText();
-                toast1.show();
+                toastMessage("Uppdated Serie");
             } else {
-                toast2.show();
+                toastMessage("No serie with that name");
             }
         }catch(Exception e){
-            toast3.show();
+            toastMessage("Check your input");
         }
         setUpAutofillSeries();
     }

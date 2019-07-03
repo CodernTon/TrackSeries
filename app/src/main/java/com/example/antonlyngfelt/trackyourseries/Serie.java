@@ -28,7 +28,9 @@ public class Serie {
         this.episode = episode;
     }
 
-    public int getSerieID() { return this.serieID; }
+    public int getSerieID() {
+        return this.serieID;
+    }
     public String getName() {
         return this.name;
     }
