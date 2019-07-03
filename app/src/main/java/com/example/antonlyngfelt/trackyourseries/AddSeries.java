@@ -51,8 +51,12 @@ public class AddSeries extends AppCompatActivity {
     }
     public void toastMessage(String toastMessage){
         Context context = getApplicationContext();
-        Toast toast = Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(context, toastMessage, Toast.LENGTH_LONG);
         toast.show();
+    }
+    public DataBaseHelper createDbhandler(){
+        dbHandler=new DataBaseHelper(this, null, null, 1);
+        return dbHandler;
     }
     public void goToShowSerie(View view) {
         Intent showSerie = new Intent(AddSeries.this, PresentResults.class);
@@ -61,12 +65,11 @@ public class AddSeries extends AppCompatActivity {
 
     public void addSerie(View view) {
         try {
-            DataBaseHelper dbHandler = new DataBaseHelper(this, null, null, 1);
-            String name = serieName.getText().toString();
-            int season = Integer.parseInt(serieSeason.getText().toString());
-            int episode = Integer.parseInt(serieEpisode.getText().toString());
-            Serie serie = new Serie(0, name, season, episode);
-            if (dbHandler.addHandlerSerie(serie)){
+            Serie serie = new Serie(0,
+                    serieName.getText().toString(),
+                    Integer.parseInt(serieSeason.getText().toString()),
+                    Integer.parseInt(serieEpisode.getText().toString()));
+            if (createDbhandler().addHandlerSerie(serie)){
                 toastMessage("Added");
                 resetText();
             }
@@ -75,15 +78,13 @@ public class AddSeries extends AppCompatActivity {
             }
         }catch (Exception e){
             toastMessage("You did not add the series correct");
-
         }
         setUpAutofillSeries();
     }
 
     public void removeSerie(View view) {
         try {
-            DataBaseHelper dataBaseHelper = new DataBaseHelper(this, null, null, 1);
-            boolean result = dataBaseHelper.deleteHandlerSerie(serieName.getText().toString());
+            boolean result = createDbhandler().deleteHandlerSerie(serieName.getText().toString());
             if (result) {
                 resetText();
                 toastMessage("Serie removed");
@@ -96,11 +97,9 @@ public class AddSeries extends AppCompatActivity {
         }
         setUpAutofillSeries();
     }
-
     public void updateSerie(View view) {
         try {
-            DataBaseHelper dataBaseHelper = new DataBaseHelper(this, null, null, 1);
-            boolean result = dataBaseHelper.updateHandlerSerie(
+            boolean result = createDbhandler().updateHandlerSerie(
                     serieName.getText().toString(),
                     Integer.parseInt(serieSeason.getText().toString()),
                     Integer.parseInt(serieEpisode.getText().toString()));

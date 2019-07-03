@@ -36,7 +36,7 @@ public class AddMovie extends AppCompatActivity {
     }
     public void toastMessage(String toastMessage){
         Context context = getApplicationContext();
-        Toast toast = Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(context, toastMessage, Toast.LENGTH_LONG);
         toast.show();
     }
     public void goToPresentResult(View view) {
