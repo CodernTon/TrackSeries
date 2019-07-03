@@ -32,6 +32,16 @@ public class AddSeries extends AppCompatActivity {
         super.onStop();
         serieName.setAdapter(null);
     }
+
+    public static int add(int a, int b){
+        return a+b;
+    }
+    public void resetText(){
+        serieName.setText("");
+        serieSeason.setText("");
+        serieEpisode.setText("");
+    }
+
     public void setUpAutofillSeries(){
         serieName = findViewById(R.id.serieName);
         dbHandler = new DataBaseHelper(this,null,null,1);
@@ -44,6 +54,7 @@ public class AddSeries extends AppCompatActivity {
         Intent showSerie = new Intent(AddSeries.this, PresentResults.class);
         startActivity(showSerie);
     }
+
     public void addSerie(View view) {
         Context context = getApplicationContext();
         Toast toast1 = Toast.makeText(context, "Serie added", Toast.LENGTH_SHORT);
@@ -57,9 +68,7 @@ public class AddSeries extends AppCompatActivity {
             Serie serie = new Serie(0, name, season, episode);
             if (dbHandler.addHandlerSerie(serie)){
                 toast1.show();
-                serieName.setText("");
-                serieSeason.setText("");
-                serieEpisode.setText("");
+                resetText();
             }
             else{
                 toast2.show();
@@ -79,9 +88,7 @@ public class AddSeries extends AppCompatActivity {
             DataBaseHelper dataBaseHelper = new DataBaseHelper(this, null, null, 1);
             boolean result = dataBaseHelper.deleteHandlerSerie(serieName.getText().toString());
             if (result) {
-                serieName.setText("");
-                serieSeason.setText("");
-                serieEpisode.setText("");
+                resetText();
                 toast1.show();
             } else {
                 toast2.show();
@@ -104,9 +111,7 @@ public class AddSeries extends AppCompatActivity {
                     Integer.parseInt(serieSeason.getText().toString()),
                     Integer.parseInt(serieEpisode.getText().toString()));
             if (result) {
-                serieName.setText("");
-                serieSeason.setText("");
-                serieEpisode.setText("");
+                resetText();
                 toast1.show();
             } else {
                 toast2.show();
