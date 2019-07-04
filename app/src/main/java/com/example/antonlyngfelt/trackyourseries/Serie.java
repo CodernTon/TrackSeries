@@ -40,8 +40,6 @@ public class Serie {
     public int getEpisode() {
         return this.episode;
     }
-
-
     @Override
     public String toString(){
         return name +" S"+ season +" E"+ episode;

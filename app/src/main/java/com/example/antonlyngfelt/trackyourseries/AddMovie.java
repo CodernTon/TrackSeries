@@ -50,8 +50,7 @@ public class AddMovie extends AppCompatActivity {
         return movieName.getText().toString();
     }
     public DataBaseHelper createDbhandler(){
-        dbHandler=new DataBaseHelper(this, null, null, 1);
-        return dbHandler;
+        return new DataBaseHelper(this, null, null, 1);
     }
     public void addMovie(View view) {
         if(movieName.getText().toString().equals("")|| movieName.getText().equals(null)) {

@@ -54,8 +54,7 @@ public class AddSeries extends AppCompatActivity {
         toast.show();
     }
     public DataBaseHelper createDbhandler(){
-        dbHandler=new DataBaseHelper(this, null, null, 1);
-        return dbHandler;
+        return new DataBaseHelper(this, null, null, 1);
     }
     public void goToShowSerie(View view) {
         Intent showSerie = new Intent(AddSeries.this, PresentResults.class);

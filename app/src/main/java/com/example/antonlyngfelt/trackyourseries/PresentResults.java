@@ -12,6 +12,7 @@ import java.util.List;
 public class PresentResults extends AppCompatActivity {
     ListView serieList;
     ListView movieList;
+    DataBaseHelper dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +31,10 @@ public class PresentResults extends AppCompatActivity {
         super.onStop();
     }
     public void addTitlesToList(){
-
     }
-
+    public DataBaseHelper createDbHandler(){
+        return new DataBaseHelper(this, null, null, 1);
+    }
     public void goToAddSerie(View view){
         Intent goToAddSerie = new Intent(PresentResults.this, AddSeries.class );
         startActivity(goToAddSerie);
@@ -42,16 +44,16 @@ public class PresentResults extends AppCompatActivity {
         startActivity(goToAddMovie);
     }
     public void showSeries(){
-        DataBaseHelper dbhandler = new DataBaseHelper(this, null, null, 1);
+        dbHandler = createDbHandler();
         serieList = (ListView)findViewById(R.id.listOfSeries);
-        List <Serie> listOfSeries = dbhandler.getAllSeriesInDb();
+        List <Serie> listOfSeries = dbHandler.getAllSeriesInDb();
         ArrayAdapter<Serie> arrAdapter = new ArrayAdapter<Serie>(this, android.R.layout.simple_list_item_1, listOfSeries);
         serieList.setAdapter(arrAdapter);
     }
     public void showMovies(){
-        DataBaseHelper dbhandler = new DataBaseHelper(this, null, null, 1);
+        dbHandler = createDbHandler();
         movieList = (ListView)findViewById(R.id.listOfMovies);
-        List<Movie> listOfMovies = dbhandler.loadHandlerMovie();
+        List<Movie> listOfMovies = dbHandler.loadHandlerMovie();
         ArrayAdapter<Movie> arrayAdapter = new ArrayAdapter<Movie>(this, android.R.layout.simple_list_item_1,listOfMovies);
         movieList.setAdapter(arrayAdapter);
     }
