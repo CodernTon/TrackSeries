@@ -19,6 +19,7 @@ public class PresentResults extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_presentresult);
     }
+
     @Override
     public void onStart(){
         super.onStart();
