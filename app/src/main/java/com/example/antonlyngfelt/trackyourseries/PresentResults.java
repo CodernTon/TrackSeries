@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.List;
 
@@ -45,7 +44,7 @@ public class PresentResults extends AppCompatActivity {
     public void showSeries(){
         DataBaseHelper dbhandler = new DataBaseHelper(this, null, null, 1);
         serieList = (ListView)findViewById(R.id.listOfSeries);
-        List <Serie> listOfSeries = dbhandler.loadHandlerSerie();
+        List <Serie> listOfSeries = dbhandler.getAllSeriesInDb();
         ArrayAdapter<Serie> arrAdapter = new ArrayAdapter<Serie>(this, android.R.layout.simple_list_item_1, listOfSeries);
         serieList.setAdapter(arrAdapter);
     }

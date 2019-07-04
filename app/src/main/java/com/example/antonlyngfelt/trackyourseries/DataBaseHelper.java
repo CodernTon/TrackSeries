@@ -23,7 +23,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ID_MOVIE = "MovieId";
     public static final String COLUMN_NAME_MOVIE = "MovieName";
 
-
+    Cursor cursor;
+    SQLiteDatabase db;
 
     public DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -44,7 +45,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+ TABLE_NAME_MOVIE);
         onCreate(db);
     }
-    public List<Serie> loadHandlerSerie(){
+
+    public List<Serie> getAllSeriesInDb(){
         List<Serie> wholeList = new LinkedList<>();
         String query = "SELECT * FROM "+ TABLE_NAME_SERIE;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -62,20 +64,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     public String[] loadSerieName(){
-        List<Serie> wholeList = new LinkedList<>();
+        List<Serie> wholeList = getAllSeriesInDb();
         Serie serie;
-        String query = "SELECT * FROM "+ TABLE_NAME_SERIE;
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query,null);
-        while(cursor.moveToNext()){
-            int result_0 = cursor.getInt(0);
-            String result_1 =cursor.getString(1);
-            int result_2 = cursor.getInt(2);
-            int result_3 = cursor.getInt(3);
-            wholeList.add(new Serie(result_0, result_1,result_2,result_3 ));
-        }
-        cursor.close();
-        db.close();
         String [] arr = new String[wholeList.size()];
         for (int i = 0; i<wholeList.size();i++){
             serie= wholeList.get(i);
@@ -83,12 +73,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         return arr;
     }
+    public Cursor getCursorWithQuery(String query){
+        db = this.getWritableDatabase();
+        return db.rawQuery(query,null);
+    }
 
     public boolean findHandlerSerie(String serieName){
         boolean valueInDatabase = false;
-        String query = "SELECT * FROM "+ TABLE_NAME_SERIE + " WHERE "+ COLUMN_NAME_SERIE + " = "+ "'"+ serieName+"'";
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query,null);
+        cursor = getCursorWithQuery("SELECT * FROM "+ TABLE_NAME_SERIE + " WHERE "+ COLUMN_NAME_SERIE + " = "+ "'"+ serieName+"'");
         if(cursor.moveToFirst()){
             valueInDatabase= true;
         }
@@ -117,9 +109,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
     public boolean deleteHandlerSerie(String serieName){
         boolean result = false;
-        String query = "Select * FROM " + TABLE_NAME_SERIE + " WHERE " + COLUMN_NAME_SERIE + "= '" + serieName + "'";
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
+        cursor = getCursorWithQuery("Select * FROM " + TABLE_NAME_SERIE + " WHERE " + COLUMN_NAME_SERIE + "= '" + serieName + "'");
         Serie serie = new Serie();
         if (cursor.moveToFirst()) {
             serie.setName(cursor.getString(1));
@@ -178,18 +168,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         return arr;
     }
-    public boolean findHandlerMovie(String movieName){
-        boolean valueInDatabase = false;
-        String query = "SELECT * FROM "+ TABLE_NAME_MOVIE + " WHERE "+ COLUMN_NAME_MOVIE + " = "+ "'"+ movieName+"'";
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query,null);
-        if(cursor.moveToFirst()){
-            valueInDatabase= true;
-        }
-        db.close();
-        cursor.close();
-        return valueInDatabase;
-    }
     public boolean addHandlerMovie(Movie movie){
         ContentValues values = new ContentValues();
         //Check if it exist in database
@@ -223,12 +201,5 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
         db.close();
         return result;
-    }
-    public boolean updateHandlerMovie(String movieName){
-        String query= "SELECT ID WHERE movieName=movieName";
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues args = new ContentValues();
-        args.put(COLUMN_NAME_MOVIE, movieName);
-        return db.update(TABLE_NAME_SERIE, args, COLUMN_NAME_MOVIE + " = '"+movieName+"'",null)>0;
     }
 }

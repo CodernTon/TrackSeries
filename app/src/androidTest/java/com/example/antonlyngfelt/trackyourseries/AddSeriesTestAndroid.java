@@ -27,32 +27,31 @@ public class AddSeriesTestAndroid {
     @Rule
     public ActivityTestRule<AddSeries> mAddSeries = new ActivityTestRule<>(AddSeries.class);
 
-    @Test
-    public void testAddSerieToDatabase()throws Exception{
+    public static void addSerieToDb(){
         onView(withId(R.id.serieName))
                 .perform(setTextInTextView("Avengers"));
         onView(withId(R.id.serieSeason))
                 .perform(setTextInTextView("2"));
         onView(withId(R.id.serieEpisode))
                 .perform(setTextInTextView("2"));
-
         onView(withId(R.id.addSerie)).perform(click());
+    }
 
-        onView(withId(R.id.serieName)).check(matches(withText("")));
-        onView(withId(R.id.serieSeason)).check(matches(withText("")));
-        onView(withId(R.id.serieEpisode)).check(matches(withText("")));
+    public static void removeSerieFromDb(){
+        onView(withId(R.id.serieName))
+                .perform(setTextInTextView("Avengers"));
+        onView(withId(R.id.removeSerie)).perform(click());
     }
 
     @Test
-    public void testRemoveSerieFromDatabase()throws Exception{
-        onView(withId(R.id.serieName))
-                .perform(setTextInTextView("Avengers"));
-
-        onView(withId(R.id.removeSerie)).perform(click());
+    public void testAddSerieToDatabase()throws Exception{
+        addSerieToDb();
 
         onView(withId(R.id.serieName)).check(matches(withText("")));
         onView(withId(R.id.serieSeason)).check(matches(withText("")));
         onView(withId(R.id.serieEpisode)).check(matches(withText("")));
+
+        removeSerieFromDb();
     }
 
     public static ViewAction setTextInTextView(final String value){
@@ -73,5 +72,34 @@ public class AddSeriesTestAndroid {
                 return "replace text";
             }
         };
+    }
+
+    @Test
+    public void testUpdateSerieToDatabase()throws Exception{
+        addSerieToDb();
+        onView(withId(R.id.serieName))
+                .perform(setTextInTextView("Avengers"));
+        onView(withId(R.id.serieSeason))
+                .perform(setTextInTextView("3"));
+        onView(withId(R.id.serieEpisode))
+                .perform(setTextInTextView("3"));
+
+        onView(withId(R.id.updateSerie)).perform(click());
+
+        onView(withId(R.id.serieName)).check(matches(withText("")));
+        onView(withId(R.id.serieSeason)).check(matches(withText("")));
+        onView(withId(R.id.serieEpisode)).check(matches(withText("")));
+
+        removeSerieFromDb();
+    }
+
+    @Test
+    public void testRemoveSerieFromDatabase()throws Exception{
+        addSerieToDb();
+        removeSerieFromDb();
+
+        onView(withId(R.id.serieName)).check(matches(withText("")));
+        onView(withId(R.id.serieSeason)).check(matches(withText("")));
+        onView(withId(R.id.serieEpisode)).check(matches(withText("")));
     }
 }

@@ -25,6 +25,7 @@ public class AddSeries extends AppCompatActivity {
     @Override
     public void onStart(){
         super.onStart();
+        declareViews();
         setUpAutofillSeries();
     }
     @Override
@@ -32,22 +33,20 @@ public class AddSeries extends AppCompatActivity {
         super.onStop();
         serieName.setAdapter(null);
     }
-
-    public static int add(int a, int b){
-        return a+b;
-    }
     public void resetText(){
         serieName.setText("");
         serieSeason.setText("");
         serieEpisode.setText("");
     }
-    public void setUpAutofillSeries(){
+    public void declareViews(){
         serieName = findViewById(R.id.serieName);
-        dbHandler = new DataBaseHelper(this,null,null,1);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dbHandler.loadSerieName());
-        serieName.setAdapter(adapter);
         serieSeason = (EditText) findViewById(R.id.serieSeason);
         serieEpisode = (EditText) findViewById(R.id.serieEpisode);
+    }
+    public void setUpAutofillSeries(){
+        dbHandler = createDbhandler();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dbHandler.loadSerieName());
+        serieName.setAdapter(adapter);
     }
     public void toastMessage(String toastMessage){
         Context context = getApplicationContext();
